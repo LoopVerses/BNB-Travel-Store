@@ -1,0 +1,18 @@
+export type FeatureIconName =
+  | "flag"
+  | "file-text"
+  | "compass"
+  | "shield"
+  | "zap"
+  | "stamp"
+  | "building-2"
+  | "plane"
+  | "hotel"
+  | "map-pin"
+  | "heart"
+  | "graduation-cap"
+  | "users"
+  | "sparkles"
+  | "car"
+  | "message-circle"
+  | "globe";
