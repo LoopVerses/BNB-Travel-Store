@@ -32,6 +32,10 @@ export const metadata: Metadata = {
   title: "B&B Travel Store | Visa Consultancy & Travel Booking",
   description: SITE.tagline,
   applicationName: SITE.name,
+  icons: {
+    icon: "/images/logo/logo.png",
+    apple: "/images/logo/logo.png",
+  },
   openGraph: {
     title: "B&B Travel Store | Visa Consultancy & Travel Booking",
     description: SITE.tagline,
