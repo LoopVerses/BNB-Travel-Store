@@ -73,7 +73,7 @@ export default function StatsSection() {
         transition={springBounce}
         className={`overflow-hidden bg-forest ${HERO_RADIUS}`}
       >
-        <div className="grid grid-cols-2 items-center gap-y-8 px-6 py-8 md:grid-cols-4 md:gap-0 md:px-10 md:py-10">
+        <div className="grid grid-cols-2 items-center gap-y-6 px-4 py-6 sm:gap-y-8 sm:px-6 sm:py-8 md:grid-cols-4 md:gap-0 md:px-10 md:py-10">
           {STATS.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -82,14 +82,14 @@ export default function StatsSection() {
               transition={{ ...springBounce, delay: 0.08 * index }}
               className="flex flex-col items-center text-center md:border-r md:border-cream/10 md:last:border-r-0"
             >
-              <span className="font-serif-display text-4xl font-bold leading-none text-gold md:text-[2.75rem]">
+              <span className="font-serif-display text-3xl font-bold leading-none text-gold sm:text-4xl md:text-[2.75rem]">
                 <CountUp
                   value={stat.value}
                   suffix={stat.suffix}
                   duration={1.8 + index * 0.15}
                 />
               </span>
-              <span className="mt-3 max-w-[9rem] font-sans-body text-[10px] font-medium uppercase leading-snug tracking-[0.16em] text-cream/75 md:text-[11px]">
+              <span className="mt-3 max-w-[9rem] font-sans-body text-[9px] font-medium uppercase leading-snug tracking-[0.14em] text-cream/75 sm:text-[10px] sm:tracking-[0.16em] md:text-[11px]">
                 {stat.label}
               </span>
             </motion.div>

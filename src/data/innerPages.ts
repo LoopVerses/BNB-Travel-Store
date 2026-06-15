@@ -150,7 +150,7 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
     title: "Comfortable &",
     highlight: "Affordable Umrah",
     subtitle: "5★ & 4★ packages with Umrah eVisa and complete support from visa to transport.",
-    heroImage: "https://images.unsplash.com/photo-1591604466377-1a63d109dccb?q=80&w=1920&auto=format&fit=crop",
+    heroImage: "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1920&auto=format&fit=crop",
     intro: {
       heading: "Complete support from visa to hotel and transport",
       body: "Comfortable and affordable Umrah packages. 5-star and 4-star options, customized economy packages, and Umrah eVisa processing, all handled by our dedicated team.",

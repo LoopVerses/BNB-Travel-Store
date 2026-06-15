@@ -7,13 +7,19 @@ import { ArrowUpRight } from "lucide-react";
 import { useMotionPrefs } from "@/lib/motionPrefs";
 
 const FOOTER_POLAROIDS = [
-  { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=400", rot: -5, y: 18, z: 10, mobileHidden: true },
-  { url: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=400", rot: 3, y: 10, z: 12, mobileHidden: true },
-  { url: "https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?q=80&w=400", rot: -3, y: 4, z: 14, mobileHidden: false },
-  { url: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400", rot: 0, y: -12, z: 20, mobileHidden: false },
-  { url: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=400", rot: 3, y: 4, z: 14, mobileHidden: false },
-  { url: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=400", rot: -2, y: 10, z: 12, mobileHidden: true },
-  { url: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=400", rot: 5, y: 18, z: 10, mobileHidden: true },
+  { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=400", rot: -5, y: 18, z: 10 },
+  { url: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=400", rot: 3, y: 10, z: 12 },
+  { url: "https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?q=80&w=400", rot: -3, y: 4, z: 14 },
+  { url: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400", rot: 0, y: -12, z: 20 },
+  { url: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=400", rot: 3, y: 4, z: 14 },
+  { url: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=400", rot: -2, y: 10, z: 12 },
+  { url: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=400", rot: 5, y: 18, z: 10 },
+];
+
+const FOOTER_POLAROIDS_MOBILE = [
+  { url: "https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?q=80&w=400", rot: -6 },
+  { url: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400", rot: 0 },
+  { url: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=400", rot: 6 },
 ];
 
 const EXPLORE_LINKS = [
@@ -46,11 +52,40 @@ export default function Footer() {
 
   return (
     <footer id="footer" aria-label="Footer" className="w-full bg-[#FAF8F5]">
-      <div className="relative z-10 flex h-[200px] w-full items-end justify-center overflow-hidden pb-0 -space-x-3 sm:h-[270px] sm:-space-x-5 md:h-[340px] md:-space-x-7 lg:-space-x-8">
+      {/* Mobile: 3 centered polaroids */}
+      <div className="relative z-10 flex h-[170px] w-full items-end justify-center gap-3 overflow-hidden px-4 pb-0 md:hidden">
+        {FOOTER_POLAROIDS_MOBILE.map((card, index) => (
+          <div
+            key={index}
+            className="relative shrink-0"
+            style={{
+              transform: `translateY(${index === 1 ? -10 : index === 0 ? 6 : 6}px)`,
+              zIndex: index === 1 ? 20 : 10,
+            }}
+          >
+            <div
+              className="relative h-[120px] w-[78px] overflow-hidden rounded-xl border-[3px] border-white bg-white shadow-[0_10px_25px_rgba(0,0,0,0.18)]"
+              style={{ transform: `rotate(${card.rot}deg)` }}
+            >
+              <Image
+                src={card.url}
+                alt={`Destination ${index + 1}`}
+                fill
+                sizes="78px"
+                className="object-cover"
+                draggable={false}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: full polaroid strip */}
+      <div className="relative z-10 hidden h-[340px] w-full items-end justify-center overflow-hidden pb-0 -space-x-7 md:flex lg:-space-x-8">
         {FOOTER_POLAROIDS.map((card, index) => (
           <div
             key={index}
-            className={`relative shrink-0 ${card.mobileHidden ? "hidden md:block" : ""}`}
+            className="relative shrink-0"
             style={{ transform: `translateY(${card.y}px)`, zIndex: card.z }}
           >
             <motion.div
@@ -75,13 +110,13 @@ export default function Footer() {
                 initial={{ rotate: card.rot }}
                 whileHover={reduced ? undefined : { scale: 1.08, rotate: 0, y: -20 }}
                 transition={t({ duration: 0.25 })}
-                className="relative h-[140px] w-[90px] cursor-pointer overflow-hidden rounded-xl border-[3px] border-white bg-white shadow-[0_10px_25px_rgba(0,0,0,0.18)] focus-within:ring-2 focus-within:ring-gold sm:h-[185px] sm:w-[118px] sm:rounded-2xl md:h-[275px] md:w-[182px] md:rounded-3xl lg:h-[315px] lg:w-[215px]"
+                className="relative h-[275px] w-[182px] cursor-pointer overflow-hidden rounded-3xl border-[3px] border-white bg-white shadow-[0_10px_25px_rgba(0,0,0,0.18)] focus-within:ring-2 focus-within:ring-gold lg:h-[315px] lg:w-[215px]"
               >
                 <Image
                   src={card.url}
                   alt={`Destination ${index + 1}`}
                   fill
-                  sizes="(max-width:640px) 90px, 215px"
+                  sizes="215px"
                   className="object-cover"
                   draggable={false}
                 />
@@ -91,7 +126,7 @@ export default function Footer() {
         ))}
       </div>
 
-      <div className="relative z-20 -mt-8 rounded-t-[2.5rem] bg-[#0A3321] px-4 pb-3 pt-12 sm:-mt-12 sm:rounded-t-[3.5rem] sm:px-6 sm:pt-16 md:px-12 md:pt-20 lg:pt-24">
+      <div className="relative z-20 -mt-6 rounded-t-[2.5rem] bg-[#0A3321] px-4 pb-3 pt-10 sm:-mt-12 sm:rounded-t-[3.5rem] sm:px-6 sm:pt-16 md:px-12 md:pt-20 lg:pt-24">
         <motion.div
           className="mx-auto max-w-7xl"
           initial="hidden"

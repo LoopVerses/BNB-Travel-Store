@@ -34,7 +34,7 @@ const TESTIMONIALS = [
 
 export default function TestimonialsSection() {
   return (
-    <section id="reviews" className="w-full bg-white px-6 py-24 md:px-12 md:py-28">
+    <section id="reviews" className="w-full bg-white px-4 py-16 sm:px-6 sm:py-20 md:px-12 md:py-28">
       <div className="mx-auto max-w-6xl">
         <motion.div
           variants={sectionHeader}
@@ -46,7 +46,7 @@ export default function TestimonialsSection() {
           <p className="mb-3 font-sans-body text-sm font-medium uppercase tracking-[0.2em] text-gold">
             Trusted by Families &amp; Business Clients
           </p>
-          <h2 className="font-serif-display text-4xl font-bold text-forest md:text-5xl">
+          <h2 className="font-serif-display text-3xl font-bold text-forest sm:text-4xl md:text-5xl">
             What Our Clients Say
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-sans-body text-forest/60">

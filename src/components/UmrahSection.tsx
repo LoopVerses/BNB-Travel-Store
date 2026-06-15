@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check } from "lucide-react";
@@ -43,6 +44,9 @@ const PACKAGES = [
   },
 ] as const;
 
+const UMRAH_BG_IMAGE =
+  "https://images.unsplash.com/photo-1553755088-ef1973c7b4a1?q=80&w=1920&auto=format&fit=crop";
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -69,9 +73,9 @@ function PackageCard({
     <motion.article
       variants={cardVariants}
       whileHover={{ y: -10, transition: { type: "spring", stiffness: 300, damping: 22 } }}
-      className={`relative flex flex-col rounded-[1.75rem] bg-cream px-8 pb-8 pt-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.25)] ${
+      className={`relative flex flex-col rounded-[1.5rem] bg-cream px-6 pb-6 pt-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.25)] sm:rounded-[1.75rem] sm:px-8 sm:pb-8 sm:pt-10 ${
         pkg.featured
-          ? "scale-[1.03] border-2 border-gold ring-4 ring-gold/20 lg:scale-105"
+          ? "border-2 border-gold ring-4 ring-gold/20 md:scale-[1.03] lg:scale-105"
           : "border border-cream-dark/80"
       }`}
     >
@@ -123,20 +127,23 @@ export default function UmrahSection() {
     <section
       id="umrah"
       aria-label="Umrah packages"
-      className="relative w-full overflow-hidden py-24 md:py-32"
+      className="relative w-full overflow-hidden py-16 sm:py-20 md:py-28 lg:py-32"
     >
       {/* Background */}
-      <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/photo-1591604466377-1a63d109dccb?q=80&w=1920&auto=format&fit=crop"
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src={UMRAH_BG_IMAGE}
           alt=""
-          className="h-full w-full object-cover"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority={false}
           aria-hidden
         />
-        <div className="absolute inset-0 bg-forest/88 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-forest/75" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 md:px-10">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 md:px-10">
         <motion.div
           className="mb-14 text-center md:mb-16"
           variants={sectionHeader}

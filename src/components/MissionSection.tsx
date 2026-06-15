@@ -120,7 +120,7 @@ export default function MissionSection() {
                 <Compass size={24} className="text-white/80" />
               </div>
               <div>
-                <h3 className="mb-2 font-sans text-6xl font-bold leading-none tracking-tight sm:text-[5rem]">
+                <h3 className="mb-2 font-sans text-5xl font-bold leading-none tracking-tight sm:text-6xl sm:text-[5rem]">
                   99%
                 </h3>
                 <p className="text-sm font-medium tracking-wide text-white/90">Travel With Confidence</p>

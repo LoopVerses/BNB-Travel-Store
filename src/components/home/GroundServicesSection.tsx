@@ -15,7 +15,7 @@ const GROUND = [
 
 export default function GroundServicesSection() {
   return (
-    <section className="w-full border-y border-forest/10 bg-cream-dark px-6 py-20 md:px-12">
+    <section className="w-full border-y border-forest/10 bg-cream-dark px-4 py-14 sm:px-6 sm:py-16 md:px-12 md:py-20">
       <div className="mx-auto max-w-6xl">
         <motion.div
           variants={sectionHeader}

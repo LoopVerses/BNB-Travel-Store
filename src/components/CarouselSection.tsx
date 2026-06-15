@@ -54,7 +54,7 @@ const PANELS_DATA = [
 
 function MobilePanel({ panel }: { panel: (typeof PANELS_DATA)[number] }) {
   return (
-    <article className="relative h-[420px] w-[320px] shrink-0 snap-center overflow-hidden rounded-[2rem] cursor-pointer">
+    <article className="relative h-[380px] w-[min(85vw,300px)] shrink-0 snap-center overflow-hidden rounded-[2rem] cursor-pointer">
       <Image
         src={panel.image}
         alt={panel.location}
@@ -107,7 +107,7 @@ export default function CarouselSection() {
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden"
+          className="flex touch-pan-x snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden"
         >
           {PANELS_DATA.map((panel) => (
             <motion.div key={panel.id} variants={fadeUp}>

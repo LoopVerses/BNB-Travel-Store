@@ -86,7 +86,7 @@ export default function BookingSection() {
       ref={sectionRef}
       id="booking"
       aria-label="Booking"
-      className="w-full bg-cream-dark px-6 py-14 md:px-10 md:py-20"
+      className="w-full bg-cream-dark px-4 py-12 sm:px-6 sm:py-16 md:px-10 md:py-20"
     >
       <div className="mx-auto max-w-6xl">
         <motion.div

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useAnimationFrame } from "framer-motion";
 import { useMotionPrefs } from "@/lib/motionPrefs";
+import { useIsMobile } from "@/lib/useMediaQuery";
 
 const SVG_VIEWBOX = { width: 1440, height: 300 };
 const WAVE_PATH = "M -50 200 Q 200 50 450 150 T 950 150 Q 1200 50 1500 200";
@@ -75,10 +76,12 @@ function PathIconsLayer({
   pathRef,
   visible,
   reduced,
+  staticIcons,
 }: {
   pathRef: React.RefObject<SVGPathElement | null>;
   visible: boolean;
   reduced: boolean;
+  staticIcons: boolean;
 }) {
   const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [iconsRevealed, setIconsRevealed] = useState(false);
@@ -88,6 +91,17 @@ function PathIconsLayer({
   const iconProgress = (index: number, base: number) =>
     (ICON_START + base + index * ICON_SPACING) % 1;
 
+  const positionIcons = (base: number) => {
+    const path = pathRef.current;
+    if (!path) return;
+
+    for (let i = 0; i < PATH_ICONS.length; i++) {
+      const el = iconRefs.current[i];
+      if (!el) continue;
+      applyIconPosition(el, path, iconProgress(i, base % 1), PATH_ICONS[i].rotationOffset);
+    }
+  };
+
   useEffect(() => {
     if (!visible) {
       setIconsRevealed(false);
@@ -96,8 +110,9 @@ function PathIconsLayer({
       return;
     }
 
-    if (reduced) {
+    if (reduced || staticIcons) {
       setIconsRevealed(true);
+      positionIcons(0);
       return;
     }
 
@@ -114,22 +129,17 @@ function PathIconsLayer({
       window.clearTimeout(revealTimer);
       window.clearTimeout(moveTimer);
     };
-  }, [visible, reduced]);
+  }, [visible, reduced, staticIcons]);
 
   useAnimationFrame((time) => {
-    const path = pathRef.current;
-    if (!path || !visible || reduced) return;
+    if (!visible || reduced || staticIcons) return;
 
     const base =
       isMoving && moveStartRef.current !== null
         ? (time - moveStartRef.current) / 1000 / ICON_LOOP_DURATION
         : 0;
 
-    for (let i = 0; i < PATH_ICONS.length; i++) {
-      const el = iconRefs.current[i];
-      if (!el) continue;
-      applyIconPosition(el, path, iconProgress(i, base % 1), PATH_ICONS[i].rotationOffset);
-    }
+    positionIcons(base);
   });
 
   if (!visible) return null;
@@ -167,22 +177,22 @@ function PolaroidCard({
   slideEase: readonly [number, number, number, number];
   compact?: boolean;
 }) {
-  const cardWidth = compact ? "w-[240px] shrink-0 snap-center" : "w-[160px] md:w-[220px] lg:w-[260px]";
-  const imgHeight = compact ? "h-[200px]" : "h-[180px] md:h-[260px] lg:h-[320px]";
+  const cardWidth = compact ? "w-full" : "w-[160px] md:w-[220px] lg:w-[260px]";
+  const imgHeight = compact ? "h-[120px] sm:h-[130px]" : "h-[180px] md:h-[260px] lg:h-[320px]";
 
   return (
     <div className={`relative ${compact ? "" : item.translateY}`}>
       <motion.div
-        initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 100, scale: reduced ? 1 : 0.92 }}
+        initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : compact ? 24 : 100, scale: reduced ? 1 : 0.92 }}
         animate={
           visible
             ? { opacity: 1, y: 0, scale: 1 }
-            : { opacity: reduced ? 1 : 0, y: reduced ? 0 : 100, scale: reduced ? 1 : 0.92 }
+            : { opacity: reduced ? 1 : 0, y: reduced ? 0 : compact ? 24 : 100, scale: reduced ? 1 : 0.92 }
         }
         transition={
           reduced
             ? { duration: 0 }
-            : { duration: 0.9, delay: 0.35 + index * 0.1, ease: slideEase }
+            : { duration: compact ? 0.6 : 0.9, delay: 0.35 + index * 0.1, ease: slideEase }
         }
         className={`will-change-transform ${compact ? cardWidth : ""}`}
       >
@@ -190,7 +200,7 @@ function PolaroidCard({
           style={{ rotate: compact ? 0 : item.rot }}
           animate={visible && !reduced && !compact ? { y: [0, -8, 0] } : { y: 0 }}
           transition={
-            reduced
+            reduced || compact
               ? { duration: 0 }
               : {
                   y: {
@@ -202,15 +212,15 @@ function PolaroidCard({
                   },
                 }
           }
-          whileHover={reduced ? undefined : { scale: 1.05, rotate: 0, y: -12 }}
-          className={`relative cursor-pointer rounded-xl bg-white p-2.5 pb-12 shadow-[0_20px_40px_rgba(0,0,0,0.5)] focus-within:ring-2 focus-within:ring-gold lg:rounded-2xl lg:p-4 lg:pb-16 ${cardWidth}`}
+          whileHover={reduced || compact ? undefined : { scale: 1.05, rotate: 0, y: -12 }}
+          className={`relative cursor-pointer rounded-xl bg-white p-2 pb-10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] focus-within:ring-2 focus-within:ring-gold sm:rounded-2xl sm:p-2.5 sm:pb-11 lg:rounded-2xl lg:p-4 lg:pb-16 ${cardWidth}`}
         >
           <div className={`relative w-full overflow-hidden rounded-lg bg-gray-200 ${imgHeight}`}>
             <Image
               src={item.imgUrl}
               alt={item.location}
               fill
-              sizes={compact ? "240px" : "(max-width:768px) 160px, 260px"}
+              sizes={compact ? "(max-width:640px) 50vw, 240px" : "(max-width:768px) 160px, 260px"}
               className="object-cover"
               priority={index < 2}
             />
@@ -224,7 +234,9 @@ function PolaroidCard({
                 ? { duration: 0 }
                 : { duration: 0.5, delay: 0.55 + index * 0.1, ease: slideEase }
             }
-            className={`absolute z-50 flex items-center gap-1.5 rounded-full bg-[#E74C3C] px-3 py-1.5 text-white shadow-xl lg:px-4 lg:py-2 ${item.tagClass}`}
+            className={`absolute z-50 flex items-center gap-1.5 rounded-full bg-[#E74C3C] px-2.5 py-1 text-white shadow-xl sm:px-3 sm:py-1.5 lg:px-4 lg:py-2 ${
+              compact ? "bottom-2 left-2 right-auto top-auto" : item.tagClass
+            }`}
           >
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3 lg:h-4 lg:w-4">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
@@ -240,13 +252,14 @@ function PolaroidCard({
 export default function HeroSection({ visible = false }: { visible?: boolean }) {
   const pathRef = useRef<SVGPathElement>(null);
   const { reduced, t } = useMotionPrefs();
+  const isMobile = useIsMobile();
   const slideEase = [0.22, 1, 0.36, 1] as const;
-  const lineDuration = reduced ? 0 : LINE_DRAW_DURATION;
-  const lineDelay = reduced ? 0 : LINE_DRAW_DELAY;
+  const lineDuration = reduced || isMobile ? 0 : LINE_DRAW_DURATION;
+  const lineDelay = reduced || isMobile ? 0 : LINE_DRAW_DELAY;
 
   return (
-    <section id="hero" className="relative w-full bg-[#FAF8F5] px-3 pb-6 pt-0 sm:px-4 md:px-8 md:pb-10">
-      <div className="relative flex min-h-[620px] flex-col items-center overflow-hidden rounded-[1.75rem] bg-[#0A3321] px-2 pb-32 pt-14 shadow-2xl sm:min-h-[680px] sm:rounded-[2.5rem] sm:pt-16 md:min-h-[750px] md:pb-10 lg:h-[800px] lg:rounded-[3.5rem]">
+    <section id="hero" className="relative w-full overflow-hidden bg-[#FAF8F5] px-3 pb-6 pt-0 sm:px-4 md:px-8 md:pb-10">
+      <div className="relative flex min-h-0 flex-col items-center overflow-hidden rounded-[1.5rem] bg-[#0A3321] px-2 pb-6 pt-10 shadow-2xl sm:rounded-[2.5rem] sm:pt-14 md:min-h-[750px] md:pb-10 md:pt-16 lg:h-[800px] lg:rounded-[3.5rem]">
         <motion.p
           initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : 60 }}
           animate={visible ? { opacity: 1, x: 0 } : { opacity: reduced ? 1 : 0, x: reduced ? 0 : 60 }}
@@ -256,7 +269,7 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
           Adventure, culture, and comfort all in one journey.
         </motion.p>
 
-        <div className="pointer-events-none z-30 mt-4 w-full self-start px-4 sm:mt-6 sm:px-6 md:mt-8 md:px-12 lg:px-16">
+        <div className="pointer-events-none z-30 mt-2 w-full self-start px-3 sm:mt-4 sm:px-6 md:mt-8 md:px-12 lg:px-16">
           <motion.div
             initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : -80 }}
             animate={visible ? { opacity: 1, x: 0 } : { opacity: reduced ? 1 : 0, x: reduced ? 0 : -80 }}
@@ -264,11 +277,11 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
             className="flex flex-col items-start gap-1 text-left leading-none sm:gap-0"
           >
             <div className="flex flex-col items-start gap-0 sm:flex-row sm:flex-nowrap sm:items-baseline sm:gap-x-3 md:gap-x-4">
-              <span className="font-sans text-4xl font-bold tracking-tight text-white md:text-[4.25rem]">
+              <span className="font-sans text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-[4.25rem]">
                 Your Next
               </span>
               <span
-                className="text-5xl leading-none text-[#F2B938] md:text-6xl lg:text-[6rem]"
+                className="text-3xl leading-none text-[#F2B938] sm:text-4xl md:text-6xl lg:text-[6rem]"
                 style={{ fontFamily: '"Caveat", "Dancing Script", cursive' }}
               >
                 Unforgettable
@@ -283,19 +296,19 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
                 Your Ne
               </span>
               <span
-                className="text-5xl leading-none text-[#F2B938] md:text-6xl lg:text-[6rem]"
+                className="text-3xl leading-none text-[#F2B938] sm:text-4xl md:text-6xl lg:text-[6rem]"
                 style={{ fontFamily: '"Caveat", "Dancing Script", cursive' }}
               >
                 Journey
               </span>
-              <span className="font-sans text-4xl font-bold tracking-tight text-white md:text-[4.25rem]">
+              <span className="font-sans text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[4.25rem]">
                 Starts Here
               </span>
             </div>
           </motion.div>
         </div>
 
-        <div className="pointer-events-none absolute top-[32%] z-10 flex h-[180px] w-full justify-center sm:top-[35%] sm:h-[240px] md:h-[300px]">
+        <div className="pointer-events-none absolute top-[32%] z-10 hidden h-[240px] w-full justify-center md:flex md:h-[300px]">
           <div className="relative h-full w-full max-w-[1400px]">
             <svg
               viewBox={`0 0 ${SVG_VIEWBOX.width} ${SVG_VIEWBOX.height}`}
@@ -317,13 +330,13 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
                 }}
               />
             </svg>
-            <PathIconsLayer pathRef={pathRef} visible={visible} reduced={reduced} />
+            <PathIconsLayer pathRef={pathRef} visible={visible} reduced={reduced} staticIcons={isMobile} />
           </div>
         </div>
 
-        {/* Mobile: horizontal scroll polaroids */}
-        <div className="pointer-events-auto absolute bottom-3 left-0 right-0 z-40 md:hidden">
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Mobile: stable 2x2 grid (no auto horizontal scroll) */}
+        <div className="relative z-40 mt-6 w-full px-2 sm:px-3 md:hidden">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
             {POLAROIDS.map((item, index) => (
               <PolaroidCard
                 key={item.location}

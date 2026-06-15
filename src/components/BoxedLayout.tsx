@@ -6,7 +6,7 @@ interface BoxedLayoutProps {
 
 export default function BoxedLayout({ children }: BoxedLayoutProps) {
   return (
-    <div className="box-border min-h-screen w-full border-2 border-gold bg-cream sm:border-[4px]">
+    <div className="box-border min-h-screen w-full overflow-x-hidden border-2 border-gold bg-cream sm:border-[4px]">
       {children}
     </div>
   );

@@ -9,12 +9,12 @@ import { useMotionPrefs } from "@/lib/motionPrefs";
 
 const FAQS = [
   {
-    q: "How do I book a trip with TRIPMINT?",
+    q: "How do I book a trip with B&B Travel Store?",
     a: "Simply browse our destinations, select your preferred package, and follow the secure booking process. Our team will confirm your reservation within 24 hours.",
   },
   {
     q: "Can I customize my travel itinerary?",
-    a: "Absolutely. Every TRIPMINT journey can be tailored to your preferences, from accommodation choices to activity schedules.",
+    a: "Absolutely. Every B&B Travel Store journey can be tailored to your preferences, from accommodation choices to activity schedules.",
   },
   {
     q: "What is your cancellation policy?",
@@ -30,7 +30,7 @@ const FAQS = [
   },
   {
     q: "How can I get real-time trip support?",
-    a: "TRIPMINT provides 24/7 in-trip support via WhatsApp, phone, and email. Your journey manager's contact is shared upon booking confirmation.",
+    a: "B&B Travel Store provides 24/7 in-trip support via WhatsApp, phone, and email. Your journey manager's contact is shared upon booking confirmation.",
   },
 ] as const;
 
@@ -53,7 +53,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
       className="mb-3 cursor-pointer rounded-2xl border border-forest/10 bg-white px-4 py-4 focus-visible:ring-2 focus-visible:ring-gold focus-visible:outline-none sm:px-6 sm:py-5"
     >
       <div className="flex items-center justify-between gap-4">
-        <p className="font-sans-body text-sm font-semibold text-forest">{question}</p>
+        <p className="font-sans-body text-sm font-semibold text-forest min-w-0 flex-1">{question}</p>
         <motion.span
           animate={{ rotate: isOpen ? 90 : 0 }}
           transition={t({ duration: 0.3 })}
