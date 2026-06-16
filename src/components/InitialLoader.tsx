@@ -11,9 +11,19 @@ export default function InitialLoader({ onComplete }: InitialLoaderProps) {
   const reduced = useReducedMotion();
 
   useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = "/images/hero/private-jet.webp";
+    link.type = "image/webp";
+    document.head.appendChild(link);
+
     const delay = reduced ? 0 : 500;
     const timer = window.setTimeout(onComplete, delay);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      link.remove();
+    };
   }, [onComplete, reduced]);
 
   return (

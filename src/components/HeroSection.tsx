@@ -6,6 +6,9 @@ import { motion, useAnimationFrame } from "framer-motion";
 import { useMotionPrefs } from "@/lib/motionPrefs";
 import { useIsMobile } from "@/lib/useMediaQuery";
 
+const JET_WEBP = "/images/hero/private-jet.webp";
+const JET_PNG = "/images/hero/private-jet.png";
+
 const SVG_VIEWBOX = { width: 1440, height: 300 };
 const WAVE_PATH = "M -50 200 Q 200 50 450 150 T 950 150 Q 1200 50 1500 200";
 
@@ -70,6 +73,143 @@ function applyIconPosition(
   el.style.left = `${pos.left}%`;
   el.style.top = `${pos.top}%`;
   el.style.transform = `translate(-50%, -50%) rotate(${pos.angle + rotationOffset}deg)`;
+}
+
+function HeroPrivateJet({
+  visible,
+  reduced,
+  slideEase,
+  isMobile,
+}: {
+  visible: boolean;
+  reduced: boolean;
+  slideEase: readonly [number, number, number, number];
+  isMobile: boolean;
+}) {
+  const [hasLanded, setHasLanded] = useState(false);
+  const noseLeft = -90;
+  const startX = isMobile ? "92vw" : "70vw";
+  const endX = isMobile ? "1vw" : 24;
+  const rumbleX = isMobile ? [-1, 1, -0.5, 0.5, 0] : [-2.5, 2.5, -1.5, 1.5, -2, 2, -1, 1, 0];
+  const rumbleY = isMobile ? [0, -1, 0.5, -0.5, 0] : [0, -2, 1, -1.5, 0.5, -1, 0];
+  const rumbleZ = isMobile
+    ? [noseLeft - 0.25, noseLeft + 0.25, noseLeft - 0.15, noseLeft + 0.15, noseLeft]
+    : [noseLeft - 0.55, noseLeft + 0.55, noseLeft - 0.35, noseLeft + 0.35, noseLeft - 0.2, noseLeft + 0.2, noseLeft];
+
+  useEffect(() => {
+    if (!visible) setHasLanded(false);
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible || reduced) {
+      setHasLanded(Boolean(visible && reduced));
+      return;
+    }
+    const timer = window.setTimeout(() => setHasLanded(true), isMobile ? 2400 : 2800);
+    return () => window.clearTimeout(timer);
+  }, [visible, reduced, isMobile]);
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute left-0 top-[6%] z-[12] max-[380px]:top-[5%] sm:top-[8%] md:top-[6%] lg:top-[4%]"
+      style={{ perspective: isMobile ? 900 : 1400 }}
+      initial={{ x: reduced ? endX : startX, y: reduced ? 0 : 16, opacity: reduced ? 0.75 : 0, scale: reduced ? 1 : 0.88 }}
+      animate={
+        visible
+          ? { x: endX, y: 0, opacity: 0.82, scale: 1 }
+          : { x: startX, y: 16, opacity: 0, scale: 0.88 }
+      }
+      transition={
+        reduced
+          ? { duration: 0 }
+          : {
+              x: { duration: isMobile ? 2.35 : 2.75, delay: 0.2, ease: slideEase },
+              y: { duration: isMobile ? 2.35 : 2.75, delay: 0.2, ease: slideEase },
+              opacity: { duration: 0.7, delay: 0.15 },
+              scale: { duration: isMobile ? 2.35 : 2.75, delay: 0.2, ease: slideEase },
+            }
+      }
+      onAnimationComplete={() => {
+        if (visible && !reduced) setHasLanded(true);
+      }}
+      aria-hidden
+    >
+      <motion.div
+        className={
+          isMobile
+            ? "relative h-[128px] w-[104px] origin-center will-change-transform max-[380px]:h-[112px] max-[380px]:w-[90px] sm:h-[168px] sm:w-[136px]"
+            : "relative h-[200px] w-[162px] origin-center will-change-transform md:h-[300px] md:w-[242px] lg:h-[380px] lg:w-[306px]"
+        }
+        style={{ transformStyle: "preserve-3d" }}
+        animate={
+          reduced || !visible
+            ? { rotateX: isMobile ? 12 : 16, y: 0, x: 0, rotateZ: noseLeft }
+            : hasLanded
+              ? {
+                  rotateX: isMobile ? [12, 14, 12] : [14, 17, 15, 16, 14],
+                  x: rumbleX,
+                  y: rumbleY,
+                  rotateZ: rumbleZ,
+                }
+              : { rotateX: isMobile ? 13 : 15, y: 0, x: 0, rotateZ: noseLeft }
+        }
+        transition={
+          reduced || !hasLanded
+            ? { duration: 0.3 }
+            : {
+                rotateX: { duration: isMobile ? 5 : 4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" },
+                x: { duration: isMobile ? 0.16 : 0.14, repeat: Infinity, ease: "linear" },
+                y: { duration: isMobile ? 0.13 : 0.11, repeat: Infinity, ease: "linear" },
+                rotateZ: { duration: isMobile ? 0.15 : 0.13, repeat: Infinity, ease: "linear" },
+              }
+        }
+      >
+        <div
+          className={`absolute left-1/2 z-0 -translate-x-1/2 rounded-[100%] bg-black/40 blur-md ${
+            isMobile ? "-bottom-2 h-2.5 w-[70%] sm:-bottom-3 sm:h-3" : "-bottom-4 h-5 md:h-6"
+          }`}
+        />
+
+        {!reduced && visible && hasLanded && (
+          <>
+            <motion.div
+              animate={{ scale: [1, 1.35, 1], opacity: [0.65, 1, 0.65] }}
+              transition={{ repeat: Infinity, duration: 0.09 }}
+              className={`absolute left-[37%] top-[61%] z-0 rounded-full bg-orange-500 blur-md ${
+                isMobile ? "h-2.5 w-2.5 sm:h-3 sm:w-3" : "h-5 w-5 md:h-7 md:w-7"
+              }`}
+            />
+            <motion.div
+              animate={{ scale: [1, 1.35, 1], opacity: [0.65, 1, 0.65] }}
+              transition={{ repeat: Infinity, duration: 0.09, delay: 0.04 }}
+              className={`absolute right-[37%] top-[61%] z-0 rounded-full bg-orange-500 blur-md ${
+                isMobile ? "h-2.5 w-2.5 sm:h-3 sm:w-3" : "h-5 w-5 md:h-7 md:w-7"
+              }`}
+            />
+            {!isMobile && (
+              <motion.div
+                animate={{ height: ["0px", "56px", "88px"], opacity: [0.45, 0.3, 0] }}
+                transition={{ repeat: Infinity, duration: 1.4, ease: "easeOut" }}
+                className="absolute left-1/2 top-[68%] z-0 w-0.5 origin-top -translate-x-1/2 bg-gradient-to-b from-white/55 via-white/12 to-transparent sm:w-1"
+              />
+            )}
+          </>
+        )}
+
+        <picture className="relative z-10 block h-full w-full drop-shadow-[0_20px_36px_rgba(0,0,0,0.45)] md:drop-shadow-[0_28px_44px_rgba(0,0,0,0.5)]">
+          <source srcSet={JET_WEBP} type="image/webp" />
+          <img
+            src={JET_PNG}
+            alt=""
+            className="h-full w-full object-contain select-none mix-blend-screen"
+            draggable={false}
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
+      </motion.div>
+    </motion.div>
+  );
 }
 
 function PathIconsLayer({
@@ -335,7 +475,7 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
 
   return (
     <section id="hero" className="relative w-full overflow-hidden bg-[#FAF8F5] px-3 pb-6 pt-0 sm:px-4 md:px-8 md:pb-10">
-      <div className="relative flex min-h-[540px] flex-col items-center overflow-hidden rounded-[1.5rem] bg-[#0A3321] px-2 pb-0 pt-10 shadow-2xl sm:min-h-[560px] sm:rounded-[2.5rem] sm:pt-14 md:min-h-[750px] md:pb-10 md:pt-16 lg:h-[800px] lg:rounded-[3.5rem]">
+      <div className="relative flex min-h-[580px] flex-col items-center overflow-hidden rounded-[1.5rem] bg-[#0A3321] px-2 pb-0 pt-10 shadow-2xl sm:min-h-[600px] sm:rounded-[2.5rem] sm:pt-14 md:min-h-[750px] md:pb-10 md:pt-16 lg:h-[800px] lg:rounded-[3.5rem]">
         <motion.p
           initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : 60 }}
           animate={visible ? { opacity: 1, x: 0 } : { opacity: reduced ? 1 : 0, x: reduced ? 0 : 60 }}
@@ -345,7 +485,9 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
           Adventure, culture, and comfort all in one journey.
         </motion.p>
 
-        <div className="relative z-50 mt-2 w-full shrink-0 self-start px-3 pb-3 sm:mt-4 sm:px-6 sm:pb-4 md:mt-8 md:px-12 md:pb-0 lg:px-16">
+        <HeroPrivateJet visible={visible} reduced={reduced} slideEase={slideEase} isMobile={isMobile} />
+
+        <div className="relative z-50 mt-2 w-full shrink-0 self-start px-3 pb-2 sm:mt-4 sm:px-6 sm:pb-4 md:mt-8 md:px-12 md:pb-0 lg:px-16">
           <motion.div
             initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : -80 }}
             animate={visible ? { opacity: 1, x: 0 } : { opacity: reduced ? 1 : 0, x: reduced ? 0 : -80 }}
@@ -384,7 +526,7 @@ export default function HeroSection({ visible = false }: { visible?: boolean }) 
           </motion.div>
         </div>
 
-        <div className="pointer-events-none absolute top-[38%] z-20 flex h-[110px] w-full justify-center sm:top-[40%] sm:h-[125px] md:top-[32%] md:h-[300px]">
+        <div className="pointer-events-none absolute top-[40%] z-20 flex h-[100px] w-full justify-center sm:top-[41%] sm:h-[115px] md:top-[32%] md:h-[300px]">
           <div className="relative h-full w-full max-w-[1400px]">
             <svg
               viewBox={`0 0 ${SVG_VIEWBOX.width} ${SVG_VIEWBOX.height}`}

@@ -8,6 +8,9 @@ interface SplitRevealProps {
   onComplete: () => void;
 }
 
+const JET_WEBP = "/images/hero/private-jet.webp";
+const JET_PNG = "/images/hero/private-jet.png";
+
 const LEFT_IMAGES = [
   "/images/hero/canada.jpg",
   "/images/hero/new%20zealand.jpg",
@@ -23,8 +26,6 @@ const RIGHT_IMAGES = [
 ];
 
 function MosaicTile({ src, alt }: { src: string; alt: string }) {
-  const isRemote = src.startsWith("http");
-
   return (
     <div className="relative min-h-0 w-full overflow-hidden rounded-lg bg-[#0D3A26] sm:rounded-2xl aspect-[4/5] sm:aspect-auto sm:h-full">
       <div className="absolute inset-0 z-10 bg-[#0A3321]/25" />
@@ -33,8 +34,27 @@ function MosaicTile({ src, alt }: { src: string; alt: string }) {
   );
 }
 
+function preloadJetImage(): Promise<string> {
+  return new Promise((resolve) => {
+    const finish = (src: string) => resolve(src);
+
+    const tryPng = () => {
+      const png = new window.Image();
+      png.onload = () => finish(JET_PNG);
+      png.onerror = () => finish(JET_PNG);
+      png.src = JET_PNG;
+    };
+
+    const webp = new window.Image();
+    webp.onload = () => finish(JET_WEBP);
+    webp.onerror = tryPng;
+    webp.src = JET_WEBP;
+  });
+}
+
 export default function SplitReveal({ onComplete }: SplitRevealProps) {
   const [engineStart, setEngineStart] = useState(false);
+  const [jetSrc, setJetSrc] = useState<string | null>(null);
   const leftPageControls = useAnimation();
   const rightPageControls = useAnimation();
   const planeControls = useAnimation();
@@ -43,6 +63,20 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
   const reduced = useReducedMotion();
 
   useEffect(() => {
+    let cancelled = false;
+
+    preloadJetImage().then((src) => {
+      if (!cancelled) setJetSrc(src);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!jetSrc) return;
+
     if (reduced) {
       onComplete();
       return;
@@ -92,6 +126,7 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
 
     playCgiSequence();
   }, [
+    jetSrc,
     planeControls,
     leftPageControls,
     rightPageControls,
@@ -133,7 +168,7 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
       <motion.div
         animate={planeControls}
         style={{ left: "50%", x: "-50%" }}
-        className="absolute z-50 h-[155px] w-[120px] origin-bottom will-change-transform sm:h-[230px] sm:w-[200px] md:h-[400px] md:w-[320px] drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)]"
+        className="absolute z-[100] h-[155px] w-[120px] origin-bottom will-change-transform sm:h-[230px] sm:w-[200px] md:h-[400px] md:w-[320px] drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)]"
       >
         {engineStart && (
           <>
@@ -159,16 +194,21 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
           </>
         )}
 
-        {/* 
-          Fixed Standard Img Tag:
-          Prevents Next.js layout engine lag and displays the private jet cutout instantly.
-        */}
-        <img
-          src="/images/hero/private-jet.png"
-          alt="Metallic Bronze Private Jet"
-          className="w-full h-full object-contain relative z-10 select-none"
-          draggable={false}
-        />
+        {jetSrc ? (
+          <picture className="relative z-10 block h-full w-full">
+            <source srcSet={JET_WEBP} type="image/webp" />
+            <img
+              src={JET_PNG}
+              alt="Metallic bronze private jet"
+              className="h-full w-full object-contain select-none"
+              draggable={false}
+              fetchPriority="high"
+              decoding="sync"
+            />
+          </picture>
+        ) : (
+          <div className="relative z-10 h-full w-full animate-pulse rounded-full bg-[#C9A84C]/20" aria-hidden />
+        )}
       </motion.div>
     </div>
   );
