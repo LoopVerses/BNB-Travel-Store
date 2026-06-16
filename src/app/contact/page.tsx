@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Mail, MessageCircle, Phone, Star } from "lucide-react";
+import { ExternalLink, Mail, MessageCircle, MessagesSquare, Phone, Star } from "lucide-react";
 import SiteShell from "@/components/layout/SiteShell";
 import InnerPageContent from "@/components/pages/InnerPageContent";
 import { INNER_PAGES } from "@/data/innerPages";
@@ -10,11 +10,12 @@ import { CTAS, SITE } from "@/lib/siteConfig";
 function ContactExtras() {
   return (
     <section className="bg-cream px-8 py-16 md:px-14">
-      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {[
+          { icon: MessagesSquare, label: "Live Chat", value: "Chat with us", href: SITE.tawk.chatUrl, external: true },
           { icon: MessageCircle, label: "WhatsApp", value: CTAS.whatsapp, href: SITE.whatsapp, external: true },
           { icon: Phone, label: "Phone", value: SITE.phone, href: `tel:${SITE.phone.replace(/\s/g, "")}` },
-          { icon: Mail, label: "Email", value: SITE.email, href: `mailto:${SITE.email}` },
+          { icon: Mail, label: "Support Email", value: SITE.tawk.ticketsEmail, href: `mailto:${SITE.tawk.ticketsEmail}` },
         ].map((item, i) => {
           const Icon = item.icon;
           return (
@@ -32,7 +33,7 @@ function ContactExtras() {
             >
               <Icon size={28} className="mb-3 text-gold" />
               <p className="font-sans-body text-xs font-bold uppercase tracking-wider text-forest/50">{item.label}</p>
-              <p className="mt-1 font-sans-body text-sm font-semibold text-forest">{item.value}</p>
+              <p className="mt-1 break-all font-sans-body text-sm font-semibold text-forest">{item.value}</p>
             </motion.a>
           );
         })}

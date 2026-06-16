@@ -11,4 +11,5 @@ export const LINKS = {
   flightsHotels: "/flights-hotels",
   whatsapp: SITE.whatsapp,
   googleReview: SITE.googleReview,
+  tawkChat: SITE.tawk.chatUrl,
 } as const;

@@ -5,11 +5,16 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight,
+  Bot,
   GraduationCap,
   Heart,
   Hotel,
   Map,
+  MessageCircle,
+  Mountain,
   Plane,
+  Ship,
+  TrainFront,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -21,6 +26,7 @@ type ServiceItem = {
   id: number;
   icon: LucideIcon;
   title: string;
+  shortTitle?: string;
   href: string;
   desc: string;
   color: string;
@@ -35,6 +41,12 @@ const SERVICES: ServiceItem[] = [
   { id: 3, icon: Heart, title: "Honeymoon Trips", href: "/holidays", desc: "Romantic escapes, private dinners, and luxurious beachfront villas.", color: "#9B59B6", angle: 150, popup: "bottom-left" },
   { id: 4, icon: GraduationCap, title: "Group Tours", href: "/holidays", desc: "Custom educational excursions and seamless corporate team trips.", color: "#1ABC9C", angle: 210, popup: "left" },
   { id: 5, icon: Users, title: "Visa Consultation", href: "/visa-services", desc: "Embassy-ready documentation support and complete file prep.", color: "#E67E22", angle: 270, popup: "top" },
+  { id: 6, icon: Ship, title: "Cruise", shortTitle: "Cruise", href: "/contact", desc: "Luxury ocean & river cruises — Mediterranean, Caribbean, and beyond.", color: "#2980B9", angle: 0, popup: "right" },
+  { id: 7, icon: Ship, title: "Cruise Booking", shortTitle: "Cruise Booking", href: "/contact", desc: "End-to-end cruise reservations: cabins, dining plans, and shore excursions.", color: "#1F618D", angle: 60, popup: "bottom-right" },
+  { id: 8, icon: Mountain, title: "Inbound Adventurous Tour Pakistan", shortTitle: "Pakistan Tours", href: "/holidays", desc: "Northern areas, cultural heritage, and adventure tours for inbound travelers.", color: "#27AE60", angle: 120, popup: "bottom-left" },
+  { id: 9, icon: TrainFront, title: "Eurail Services", shortTitle: "Eurail", href: "/contact", desc: "Eurail passes and multi-country train itineraries across Europe.", color: "#8E44AD", angle: 180, popup: "left" },
+  { id: 10, icon: Bot, title: "Chatbot Development", shortTitle: "Chatbot Dev", href: "/contact", desc: "Custom AI chatbots for travel agencies — bookings, FAQs, and lead capture.", color: "#16A085", angle: 240, popup: "bottom" },
+  { id: 11, icon: MessageCircle, title: "WhatsApp Agent", shortTitle: "WhatsApp Agent", href: "/contact", desc: "Automated WhatsApp travel agents for quotes, follow-ups, and customer support.", color: "#25D366", angle: 300, popup: "right" },
 ];
 
 const FOREST = "#0A3321";
@@ -105,7 +117,7 @@ function ServiceNode({
   const [isHovered, setIsHovered] = useState(false);
   const active = isHovered || isActive;
 
-  const radius = isMobile ? 130 : 235;
+  const radius = isMobile ? 130 : 255;
   const pos = getCircularPosition(item.angle, radius);
   const popupClass = getPopupPlacementClass(item.popup);
   const motionFrom = getPopupMotionOrigin(item.popup);
@@ -127,22 +139,24 @@ function ServiceNode({
     >
       <div className="relative">
       <div
-        className={`flex items-center gap-3 rounded-full border bg-white/95 px-5 py-3 shadow-[0_8px_30px_rgba(10,51,33,0.08)] backdrop-blur-sm transition-all duration-300 ${
+        className={`flex items-center gap-2 rounded-full border bg-white/95 px-3 py-2.5 shadow-[0_8px_30px_rgba(10,51,33,0.08)] backdrop-blur-sm transition-all duration-300 sm:gap-2.5 sm:px-4 sm:py-3 ${
           active
             ? "border-[#C9A84C]/50 shadow-[0_12px_40px_rgba(201,168,76,0.22)]"
             : "border-[#0A3321]/8 hover:border-[#C9A84C]/35"
         }`}
       >
         <div
-          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-300"
+          className="flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-300 sm:h-9 sm:w-9"
           style={{
             backgroundColor: active ? item.color : "rgba(10,51,33,0.06)",
             color: active ? "white" : FOREST,
           }}
         >
-          <Icon size={17} strokeWidth={2} />
+          <Icon size={16} strokeWidth={2} />
         </div>
-        <span className="whitespace-nowrap font-sans text-xs font-bold text-[#0A3321] lg:text-sm">{item.title}</span>
+        <span className="whitespace-nowrap font-sans text-[10px] font-bold text-[#0A3321] sm:text-[11px] lg:text-xs">
+          {item.shortTitle ?? item.title}
+        </span>
       </div>
 
       <AnimatePresence>
@@ -281,7 +295,7 @@ export default function TravelServicesSection() {
 
         {showWheel ? (
           <div className="relative w-full overflow-visible px-2 py-6 sm:px-4 md:py-8">
-            <div className="relative mx-auto flex h-[660px] w-full max-w-[900px] items-center justify-center overflow-visible lg:h-[740px]">
+            <div className="relative mx-auto flex h-[700px] w-full max-w-[960px] items-center justify-center overflow-visible lg:h-[800px]">
             <PremiumCompass size="lg" />
 
             {SERVICES.map((item, index) => (

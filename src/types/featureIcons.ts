@@ -15,4 +15,8 @@ export type FeatureIconName =
   | "sparkles"
   | "car"
   | "message-circle"
-  | "globe";
+  | "globe"
+  | "mountain"
+  | "ship"
+  | "train"
+  | "bot";

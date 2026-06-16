@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Bot,
   Building2,
   Car,
   Compass,
@@ -12,10 +13,13 @@ import {
   Hotel,
   MapPin,
   MessageCircle,
+  Mountain,
   Plane,
+  Ship,
   Shield,
   Sparkles,
   Stamp,
+  TrainFront,
   Users,
   Zap,
   type LucideIcon,
@@ -40,6 +44,10 @@ export const FEATURE_ICONS: Record<FeatureIconName, LucideIcon> = {
   car: Car,
   "message-circle": MessageCircle,
   globe: Globe,
+  mountain: Mountain,
+  ship: Ship,
+  train: TrainFront,
+  bot: Bot,
 };
 
 export function FeatureIcon({

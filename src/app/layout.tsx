@@ -5,6 +5,7 @@ import {
   Playfair_Display,
 } from "next/font/google";
 import { SITE } from "@/lib/siteConfig";
+import TawkToChat from "@/components/TawkToChat";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -59,7 +60,10 @@ export default function RootLayout({
       lang="en"
       className={`${playfairDisplay.variable} ${inter.variable} ${dancingScript.variable}`}
     >
-      <body className="font-sans-body antialiased">{children}</body>
+      <body className="font-sans-body antialiased">
+        {children}
+        <TawkToChat />
+      </body>
     </html>
   );
 }
