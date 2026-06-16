@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, useAnimation, useReducedMotion } from "framer-motion";
 import { useIsMobile } from "@/lib/useMediaQuery";
@@ -23,24 +22,13 @@ const RIGHT_IMAGES = [
   "https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?q=80&w=400",
 ];
 
-function MosaicTile({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
+function MosaicTile({ src, alt }: { src: string; alt: string }) {
   const isRemote = src.startsWith("http");
 
   return (
     <div className="relative min-h-0 w-full overflow-hidden rounded-lg bg-[#0D3A26] sm:rounded-2xl aspect-[4/5] sm:aspect-auto sm:h-full">
       <div className="absolute inset-0 z-10 bg-[#0A3321]/25" />
-      {isRemote ? (
-        <img src={src} alt={alt} className="h-full w-full object-cover opacity-85" />
-      ) : (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes="(max-width: 767px) 25vw, 20vw"
-          className="object-cover opacity-85"
-          priority={priority}
-        />
-      )}
+      <img src={src} alt={alt} className="h-full w-full object-cover opacity-85" loading="eager" />
     </div>
   );
 }
@@ -124,7 +112,7 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
         className={`${panelClass} left-0 border-r border-[#E8B031]/35 sm:border-r-2`}
       >
         {LEFT_IMAGES.map((src, i) => (
-          <MosaicTile key={src} src={src} alt={`Travel ${i + 1}`} priority={i < 2} />
+          <MosaicTile key={src} src={src} alt={`Travel ${i + 1}`} />
         ))}
       </motion.div>
 
@@ -139,7 +127,7 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
       </motion.div>
 
       {/* 
-        3D BRONZE PRIVATE JET CONTAINER
+        3D BRONZE PRIVATE JET CONTAINER (With standard high-performance Img tag)
         Hardware-accelerated and detailed with high-end dropping shadows.
       */}
       <motion.div
@@ -171,17 +159,16 @@ export default function SplitReveal({ onComplete }: SplitRevealProps) {
           </>
         )}
 
-        {/* Next.js Optimized High-Res Metallic Private Jet Cutout */}
-        <div className="relative w-full h-full z-10">
-          <Image
-            src="/images/hero/plane.png"
-            alt="Metallic bronze private jet"
-            fill
-            className="object-contain"
-            priority
-            loading="eager"
-          />
-        </div>
+        {/* 
+          Fixed Standard Img Tag:
+          Prevents Next.js layout engine lag and displays the private jet cutout instantly.
+        */}
+        <img
+          src="/images/hero/private-jet.png"
+          alt="Metallic Bronze Private Jet"
+          className="w-full h-full object-contain relative z-10 select-none"
+          draggable={false}
+        />
       </motion.div>
     </div>
   );
