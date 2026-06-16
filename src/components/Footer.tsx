@@ -88,7 +88,6 @@ const EXPLORE_LINKS = [
   { label: "Cruise Booking", href: "/contact" },
   { label: "Pakistan Adventure Tours", href: "/holidays" },
   { label: "Eurail Services", href: "/contact" },
-  { label: "Chatbot & WhatsApp Agent", href: "/contact" },
 ];
 
 export default function Footer() {

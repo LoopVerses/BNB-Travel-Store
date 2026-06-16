@@ -183,14 +183,13 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
     heroImage: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1920&auto=format&fit=crop",
     intro: {
       heading: "We don't just book tickets. We prepare complete visa-ready travel files",
-      body: "B&B Travel Store is a full-service travel agency — visa consultancy, e-visas, holidays, Umrah, flights, hotels, cruise booking, Eurail, inbound Pakistan tours, plus chatbot and WhatsApp agent solutions for travel businesses.",
+      body: "B&B Travel Store is a full-service travel agency — visa consultancy, e-visas, holidays, Umrah, flights, hotels, cruise booking, Eurail, and inbound Pakistan tours for families and business clients.",
     },
     features: [
       { icon: "file-text", title: "Visa File Experts", description: "Cover letters, itineraries, and complete documentation support." },
       { icon: "heart", title: "Family Trusted", description: "580+ families satisfied with honest, transparent service." },
       { icon: "users", title: "Business Clients", description: "Corporate travel and business visa support available." },
       { icon: "globe", title: "Worldwide Reach", description: "Cruises, Eurail, flights, hotels, and embassy partners globally." },
-      { icon: "bot", title: "Digital Solutions", description: "Chatbot development and WhatsApp agent automation for agencies." },
     ],
     steps: [
       { num: "01", title: "Listen", description: "We understand your travel goals, budget, and visa needs." },

@@ -18,5 +18,4 @@ export type FeatureIconName =
   | "globe"
   | "mountain"
   | "ship"
-  | "train"
-  | "bot";
+  | "train";

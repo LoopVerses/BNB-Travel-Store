@@ -5,12 +5,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight,
-  Bot,
   GraduationCap,
   Heart,
   Hotel,
   Map,
-  MessageCircle,
   Mountain,
   Plane,
   Ship,
@@ -45,8 +43,6 @@ const SERVICES: ServiceItem[] = [
   { id: 7, icon: Ship, title: "Cruise Booking", shortTitle: "Cruise Booking", href: "/contact", desc: "End-to-end cruise reservations: cabins, dining plans, and shore excursions.", color: "#1F618D", angle: 60, popup: "bottom-right" },
   { id: 8, icon: Mountain, title: "Inbound Adventurous Tour Pakistan", shortTitle: "Pakistan Tours", href: "/holidays", desc: "Northern areas, cultural heritage, and adventure tours for inbound travelers.", color: "#27AE60", angle: 120, popup: "bottom-left" },
   { id: 9, icon: TrainFront, title: "Eurail Services", shortTitle: "Eurail", href: "/contact", desc: "Eurail passes and multi-country train itineraries across Europe.", color: "#8E44AD", angle: 180, popup: "left" },
-  { id: 10, icon: Bot, title: "Chatbot Development", shortTitle: "Chatbot Dev", href: "/contact", desc: "Custom AI chatbots for travel agencies — bookings, FAQs, and lead capture.", color: "#16A085", angle: 240, popup: "bottom" },
-  { id: 11, icon: MessageCircle, title: "WhatsApp Agent", shortTitle: "WhatsApp Agent", href: "/contact", desc: "Automated WhatsApp travel agents for quotes, follow-ups, and customer support.", color: "#25D366", angle: 300, popup: "right" },
 ];
 
 const FOREST = "#0A3321";

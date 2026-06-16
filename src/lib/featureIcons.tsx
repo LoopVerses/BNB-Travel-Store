@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Bot,
   Building2,
   Car,
   Compass,
@@ -47,7 +46,6 @@ export const FEATURE_ICONS: Record<FeatureIconName, LucideIcon> = {
   mountain: Mountain,
   ship: Ship,
   train: TrainFront,
-  bot: Bot,
 };
 
 export function FeatureIcon({
