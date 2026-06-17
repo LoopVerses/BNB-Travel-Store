@@ -11,7 +11,6 @@ const PACKAGES = [
   {
     id: "silver",
     name: "Silver Economy",
-    price: "$850",
     features: [
       "14 Days Package",
       "3-Star Hotels (Bus Service)",
@@ -22,7 +21,6 @@ const PACKAGES = [
   {
     id: "premium",
     name: "Premium Gold",
-    price: "$1,250",
     features: [
       "4-Star Hotels (Walking Distance)",
       "Half-Board Breakfast",
@@ -34,7 +32,6 @@ const PACKAGES = [
   {
     id: "vvip",
     name: "VVIP Deluxe",
-    price: "$1,950",
     features: [
       "5-Star Clock Tower Hotels",
       "Full Board Buffet",
@@ -85,12 +82,8 @@ function PackageCard({
         </span>
       )}
 
-      <p className="mb-3 font-sans-body text-xs font-bold uppercase tracking-[0.18em] text-gold">
+      <p className="mb-8 font-sans-body text-xs font-bold uppercase tracking-[0.18em] text-gold">
         {pkg.name}
-      </p>
-
-      <p className="mb-8 font-serif-display text-5xl font-bold tracking-tight text-forest md:text-[3.25rem]">
-        {pkg.price}
       </p>
 
       <ul className="mb-10 flex flex-1 flex-col gap-3">
@@ -115,7 +108,7 @@ function PackageCard({
             : "border-2 border-gold bg-transparent text-gold hover:bg-gold/10"
         }`}
       >
-        Details
+        Get Quote
         <ArrowUpRight size={14} strokeWidth={2.5} />
       </Link>
     </motion.article>

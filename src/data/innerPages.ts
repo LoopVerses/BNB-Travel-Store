@@ -14,7 +14,6 @@ export type InnerPageData = {
   gallery?: { title: string; image: string }[];
   packages?: {
     name: string;
-    price: string;
     features: string[];
     featured?: boolean;
     badge?: string;
@@ -97,13 +96,13 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
     features: [
       { icon: "plane", title: "Air Ticketing", description: "International and domestic flights at competitive rates." },
       { icon: "hotel", title: "Hotel Reservations", description: "Worldwide hotel bookings from budget to 5-star luxury." },
-      { icon: "shield", title: "Secure Booking", description: "Transparent pricing, e-tickets, and vouchers via WhatsApp." },
+      { icon: "shield", title: "Secure Booking", description: "E-tickets, vouchers, and booking support via WhatsApp." },
       { icon: "zap", title: "Fast Confirmation", description: "Same-day quotes and instant booking confirmation." },
     ],
     steps: [
       { num: "01", title: "Share Details", description: "Dates, destinations, travelers, and budget preferences." },
       { num: "02", title: "Compare Options", description: "We send the best flight and hotel combinations." },
-      { num: "03", title: "Book & Pay", description: "Secure payment with full price transparency." },
+      { num: "03", title: "Book & Pay", description: "Secure payment with full booking confirmation." },
       { num: "04", title: "Fly with Confidence", description: "Tickets, vouchers, and 24/7 in-trip support." },
     ],
     stats: [
@@ -111,7 +110,7 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
       { value: "100+", label: "Destinations" },
       { value: "24H", label: "Support" },
     ],
-    cta: { title: "Book your flights & hotels", body: "Get the best rates with a free quote on WhatsApp today.", button: "WhatsApp Us" },
+    cta: { title: "Book your flights & hotels", body: "Contact us on WhatsApp for a free personalized quote today.", button: "WhatsApp Us" },
   },
   holidays: {
     slug: "holidays",
@@ -168,9 +167,9 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
       { num: "04", title: "Blessed Return", description: "Safe journey home with memories for a lifetime." },
     ],
     packages: [
-      { name: "Silver Economy", price: "$850", features: ["14 Days Package", "3-Star Hotels (Bus Service)", "Umrah eVisa & Insurance"] },
-      { name: "Premium Gold", price: "$1,250", features: ["4-Star Hotels (Walking Distance)", "Half-Board Breakfast", "VIP Ground Transport"], featured: true, badge: "Most Popular" },
-      { name: "VVIP Deluxe", price: "$1,950", features: ["5-Star Clock Tower Hotels", "Full Board Buffet", "Business Class Option"] },
+      { name: "Silver Economy", features: ["14 Days Package", "3-Star Hotels (Bus Service)", "Umrah eVisa & Insurance"] },
+      { name: "Premium Gold", features: ["4-Star Hotels (Walking Distance)", "Half-Board Breakfast", "VIP Ground Transport"], featured: true, badge: "Most Popular" },
+      { name: "VVIP Deluxe", features: ["5-Star Clock Tower Hotels", "Full Board Buffet", "Business Class Option"] },
     ],
     cta: { title: "Begin your Umrah journey", body: "WhatsApp us for dates, group availability, and package details.", button: "WhatsApp Us" },
   },
@@ -194,7 +193,7 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
     steps: [
       { num: "01", title: "Listen", description: "We understand your travel goals, budget, and visa needs." },
       { num: "02", title: "Prepare", description: "Complete files, bookings, and itineraries, done right." },
-      { num: "03", title: "Deliver", description: "Fixed pricing, written scope, on-time delivery." },
+      { num: "03", title: "Deliver", description: "Written scope, on-time delivery, and full support." },
       { num: "04", title: "Support", description: "24/7 WhatsApp support before, during, and after travel." },
     ],
     stats: [
@@ -223,10 +222,10 @@ export const INNER_PAGES: Record<string, InnerPageData> = {
     ],
     steps: [
       { num: "01", title: "Message Us", description: "WhatsApp your destination, dates, and travel purpose." },
-      { num: "02", title: "Get a Quote", description: "Clear pricing in PKR with written scope and no surprises." },
+      { num: "02", title: "Get a Quote", description: "Personalized quote with written scope and no surprises." },
       { num: "03", title: "Confirm", description: "Approve your package and complete secure payment." },
       { num: "04", title: "Travel", description: "Receive documents and 24/7 support throughout." },
     ],
-    cta: { title: "Chat with us now", body: "Two lines about your trip and we reply with a clear scope and price.", button: "WhatsApp Us" },
+    cta: { title: "Chat with us now", body: "Two lines about your trip and we reply with a clear scope and next steps.", button: "WhatsApp Us" },
   },
 };

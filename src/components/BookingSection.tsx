@@ -173,7 +173,7 @@ export default function BookingSection() {
                           whileTap={{ scale: 0.97 }}
                         >
                           <Search size={17} strokeWidth={2.5} />
-                          Search Best Rates
+                          Search Flights
                         </motion.span>
                       </Link>
                     </div>

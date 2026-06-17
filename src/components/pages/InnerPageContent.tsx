@@ -235,10 +235,9 @@ export default function InnerPageContent({ page }: { page: InnerPageData }) {
                       {pkg.badge}
                     </span>
                   )}
-                  <p className="mb-2 font-sans-body text-xs font-bold uppercase tracking-[0.16em] text-gold">
+                  <p className="mb-6 font-sans-body text-xs font-bold uppercase tracking-[0.16em] text-gold">
                     {pkg.name}
                   </p>
-                  <p className="mb-6 font-serif-display text-4xl font-bold text-forest">{pkg.price}</p>
                   <ul className="mb-8 flex flex-col gap-2">
                     {pkg.features.map((f) => (
                       <li key={f} className="font-sans-body text-sm text-forest/65">
@@ -256,7 +255,7 @@ export default function InnerPageContent({ page }: { page: InnerPageData }) {
                       pkg.featured ? "bg-gold text-white" : "border-2 border-gold text-gold"
                     }`}
                   >
-                    Details
+                    Get Quote
                   </motion.a>
                 </motion.article>
               ))}

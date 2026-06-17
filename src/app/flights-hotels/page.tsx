@@ -4,7 +4,7 @@ import { INNER_PAGES } from "@/data/innerPages";
 
 export const metadata = {
   title: "Flights & Hotels | B&B Travel Store",
-  description: "Book flights and hotels at the best rates with B&B Travel Store.",
+  description: "Book flights and hotels with B&B Travel Store.",
 };
 
 export default function FlightsHotelsPage() {
